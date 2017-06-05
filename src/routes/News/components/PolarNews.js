@@ -32,7 +32,7 @@ class PolarNews extends React.PureComponent {
     const {dataState, label, isFetch} =this.state
 
     function getRandomColor() {
-      var hex = Math.floor(Math.random() * 0xFFFFFF);
+      let hex = Math.floor(Math.random() * 0xFFFFFF);
       return "#" + ("000000" + hex.toString(16)).substr(-6);
     }
 
