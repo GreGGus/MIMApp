@@ -1,14 +1,10 @@
-
 /**
  * Created by Gohma on 04/06/2017.
  */
-import React from 'react'
-import {Grid, Col, Nav, Table, NavItem, Row} from "react-bootstrap"
-import {Bar, Polar} from 'react-chartjs-2';
-import {ClipLoader} from "halogen"
-
-import {getNewsSource} from "../../../../services/api"
-import moment from "moment";
+import React from "react";
+import {Polar} from "react-chartjs-2";
+import {ClipLoader} from "halogen";
+import {getNewsSource} from "../../../../services/api";
 
 
 class PolarNews extends React.PureComponent {
