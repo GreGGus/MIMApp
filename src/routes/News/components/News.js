@@ -11,29 +11,35 @@ import TimeLineNews from './TimeLineNews'
 class News extends React.PureComponent {
   constructor(props) {
     super(props)
-    props.doSmthg()
   }
 
+  componentDidMount=() => {
+    this.props.fetchNews()
+    this.props.fetchNewsAgregat()
+
+  }
 
   render() {
+
+    const {agregat,newsData} = this.props
+    console.log("agregatNEWS",agregat)
     return (
       <div>
-
         <Grid >
           <Row>
-            <Col md={6}>
-              < BarNews />
+            <Col mdOffset={3} md={6}>
+              <BarNews sagaData={agregat} />
             </Col>
-            <Col md={6}>
-              <PolarNews />
+            <Col mdOffset={3} md={6}>
+              <PolarNews sagaData={agregat} />
             </Col>
           </Row>
           <Row>
-            <Col md={6}>
-              <PieNews />
+            <Col mdOffset={3} md={6}>
+              <PieNews sagaData={agregat} />
             </Col>
-            <Col md={6}>
-              <TimeLineNews />
+            <Col mdOffset={3} md={6}>
+              <TimeLineNews sagaData={newsData} />
             </Col>
           </Row>
         </Grid>

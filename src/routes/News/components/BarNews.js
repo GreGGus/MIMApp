@@ -1,11 +1,10 @@
 /**
  * Created by Gohma on 04/06/2017.
  */
-import React from 'react'
-import {Grid, Col, Nav, Table, NavItem, Row} from "react-bootstrap"
-import {Bar, HorizontalBar} from 'react-chartjs-2';
-
-import {getNewsSource} from "../../../../services/api"
+import React from "react";
+import {Bar} from "react-chartjs-2";
+import * as Utils from "../../../utils";
+import {ClipLoader} from "halogen";
 
 
 class BarNews extends React.PureComponent {
@@ -13,35 +12,40 @@ class BarNews extends React.PureComponent {
     super(props)
     this.state = {
       dataState: [],
-      label: []
+      label: [],
+      isFetch:false
     }
   }
 
 
-  componentWillMount() {
-    getNewsSource().then((response) => {
+  componentWillReceiveProps = (props) => {
+    const {sagaData} = props
+    let obj = sagaData
+    if (sagaData) {
+      for (let prop in obj) {
+        if (obj[prop] < 6)
+          delete obj[prop];
+      }
+
       this.setState({
-        dataState: Object.values(response.data),
-        label: Object.keys(response.data)
+        dataState: Object.values(obj),
+        label: Object.keys(obj),
+        isFetch:true,
       })
-    })
+    }
   }
 
   render() {
-    const {dataState, label} =this.state
+    const {dataState, label,isFetch} =this.state
 
-    function getRandomColor() {
-      var hex = Math.floor(Math.random() * 0xFFFFFF);
-      return "#" + ("000000" + hex.toString(16)).substr(-6);
-    }
 
     const data = {
       labels: label,
       datasets: [
         {
           label: 'Sauces',
-          backgroundColor: [getRandomColor(),
-            getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+          backgroundColor: [Utils.getRandomColor(),
+            Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor(), Utils.getRandomColor()],
           borderColor: 'rgba(255,99,132,1)',
           borderWidth: 1,
           hoverBackgroundColor: 'rgba(255,99,132,0.4)',
@@ -51,17 +55,19 @@ class BarNews extends React.PureComponent {
       ]
     }
 
-    return (
-      <div>
-        <Bar width={1200}
-             height={550}
-             options={{
-               maintainAspectRatio: false
-             }}
-             data={data}/>
-      </div>
+    if (isFetch) {
+      return (
+        <div>
+          <Bar width={1200}
+               height={550}
+               options={{
+                 maintainAspectRatio: false
+               }}
+               data={data}/>
+        </div>)
+    } else return <div ><ClipLoader color="#26A65B"/></div>
 
-    )
+
   }
 }
 export default BarNews

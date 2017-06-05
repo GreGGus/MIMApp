@@ -3,7 +3,7 @@
  */
 import {connect} from 'react-redux'
 import News from '../components/News'
-import {doSmthgin} from '../modules/news'
+import {fetchNews, fetchNewsAgregat} from '../modules/news'
 
 
 /*  This is a container component. Notice it does not contain any JSX,
@@ -18,14 +18,20 @@ import {doSmthgin} from '../modules/news'
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    doSmthg: (value) => dispatch(doSmthgin(value))
+    fetchNews: () => dispatch(fetchNews())
+    ,
+    fetchNewsAgregat: () => dispatch(fetchNewsAgregat())
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => {
+
+  console.log("testMapState",state.news.agregat)
+return{
   counter: state.counter,
-  dataLOL: state.news.data
-})
+  newsData: state.news.data,
+  agregat:state.news.agregat
+}}
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
 

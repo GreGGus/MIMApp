@@ -1,39 +1,30 @@
 /**
  * Created by Gohma on 04/06/2017.
  */
-/**
- * Created by Gohma on 04/06/2017.
- */
 import React from "react";
-import {Grid, Col, Nav, Table, NavItem, Row} from "react-bootstrap";
-import {getNews} from "../../../../services/api";
 import moment from "moment";
-import {Line} from "react-chartjs-2"
+import {Line} from "react-chartjs-2";
+import {ClipLoader} from "halogen"
+
+
 class TimeLineNews extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      dataState: []
+      dataState: [],
+      isFetch:false,
     }
-
     this.getData = this.getData.bind()
 
   }
 
-  componentWillMount() {
-    getNews().then((response) => {
-      console.log("response", response)
-
-
-      console.log("dataresponse", response)
-      const test = moment(response.data.results.created_at).month()
-      const da = this.getData(response.data.results)
-      console.log("eestData", test)
-
+  componentWillReceiveProps(props) {
+    const {sagaData} = props
+    if (sagaData)
       this.setState({
-        dataState: da
+        dataState: this.getData(sagaData.results),
+        isFetch:true
       })
-    })
   }
 
   getData = (data) => {
@@ -50,44 +41,43 @@ class TimeLineNews extends React.PureComponent {
     let k = 0
     let l = 0
     let m = 0
-    console.log("data", data)
 
     data.map((data) => {
       switch (moment(data.created_at).month()) {
-        case 1 :
+        case 0 :
           a++
           break;
-        case 2 :
+        case 1 :
           b++;
           break;
-        case 3 :
+        case 2 :
           c++;
           break;
-        case 4 :
+        case 3 :
           d++;
           break;
-        case 5 :
+        case 4 :
           e++;
           break;
-        case 6 :
+        case 5 :
           f++;
           break;
-        case 7 :
+        case 6 :
           g++;
           break;
-        case 8 :
+        case 7 :
           h++;
           break;
-        case 9 :
+        case 8 :
           i++;
           break;
-        case 10 :
+        case 9 :
           j++;
           break;
-        case 11 :
+        case 10 :
           k++;
           break;
-        case 12 :
+        case 11 :
           l++;
           break;
       }
@@ -98,9 +88,7 @@ class TimeLineNews extends React.PureComponent {
 
   render() {
 
-    const {dataState} =this.state
-    console.log("dataState", dataState)
-
+    const {dataState,isFetch} =this.state
     const data = {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'July', 'July', 'July', 'July', 'July', 'July', 'July'],
       datasets: [
@@ -127,18 +115,14 @@ class TimeLineNews extends React.PureComponent {
         }
       ]
     };
-
-    console.log("data", data)
-
-    return (
-      <div>
-        <Line data={data}/>
-
-
-      </div>
-
-
-    )
+    if (isFetch) {
+      return (
+        <div >
+          <h1> Timeline </h1>
+          <Line data={data}/>
+        </div>
+      )
+    } else return <div ><ClipLoader color="#26A65B"/></div>
   }
 }
 export default TimeLineNews

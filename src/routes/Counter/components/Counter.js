@@ -2,16 +2,18 @@
  * Created by Gohma on 04/06/2017.
  */
 import React from "react";
-import {Grid, Col, Nav, Table, NavItem, Row} from "react-bootstrap";
+import {Grid, Col, Nav, Table, NavItem,Pagination, Row} from "react-bootstrap";
 import {getNews} from "../../../../services/api";
 import moment from "moment";
+
 
 class NewsList extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
       dataState: [],
-      count:0
+      count:0,
+      activePage:0
     }
 
   }
@@ -28,6 +30,7 @@ class NewsList extends React.PureComponent {
   render() {
 
     const {dataState,count} =this.state
+    console.log("dataState",dataState)
     return (
       <div>
         <h1> Articles count : {count} </h1>
@@ -57,9 +60,17 @@ class NewsList extends React.PureComponent {
                 })}
                 </tbody>
               </Table>
-            </Col>
-            <Col md={6}>
-
+              <Pagination
+                prev
+                next
+                first
+                last
+                ellipsis
+                boundaryLinks
+                items={20}
+                maxButtons={5}
+                activePage={this.state.activePage}
+                 />
             </Col>
           </Row>
         </Grid>

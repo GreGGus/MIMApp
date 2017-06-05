@@ -4,7 +4,6 @@
 import React from "react";
 import {Polar} from "react-chartjs-2";
 import {ClipLoader} from "halogen";
-import {getNewsSource} from "../../../../services/api";
 
 
 class PolarNews extends React.PureComponent {
@@ -13,23 +12,35 @@ class PolarNews extends React.PureComponent {
     this.state = {
       dataState: [],
       label: [],
-      isFetch: false
+      isFetch:false
     }
   }
 
 
-  componentWillMount() {
-    getNewsSource().then((response) => {
+  componentWillReceiveProps = (props) => {
+    const {sagaData} = props
+    let obj = sagaData
+
+
+    if (sagaData) {
+      for (let prop in obj) {
+        if (obj[prop] < 6)
+          delete obj[prop];
+      }
       this.setState({
-        dataState: Object.values(response.data),
-        label: Object.keys(response.data),
-        isFetch: true
+        dataState: Object.values(obj),
+        label: Object.keys(obj),
+        isFetch:true
       })
-    })
+    }
+
+
   }
 
   render() {
-    const {dataState, label, isFetch} =this.state
+    const {dataState, label,isFetch} =this.state
+
+
 
     function getRandomColor() {
       let hex = Math.floor(Math.random() * 0xFFFFFF);
@@ -56,7 +67,19 @@ class PolarNews extends React.PureComponent {
           getRandomColor(),
           getRandomColor(),
           getRandomColor(),
-
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
+          getRandomColor(),
         ],
         label: 'My dataset' // for legend
       }],

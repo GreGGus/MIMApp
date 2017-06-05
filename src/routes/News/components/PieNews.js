@@ -1,20 +1,10 @@
 /**
  * Created by Gohma on 04/06/2017.
  */
-import React from 'react';
-import {Doughnut} from 'react-chartjs-2';
-import {getNewsSource} from "../../../../services/api";
-import {ScaleLoader} from "halogen"
+import React from "react";
+import {Doughnut} from "react-chartjs-2";
+import {ClipLoader} from "halogen";
 
-
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-const getState = () => ({
-  labels: [],
-  datasets: []
-});
 
 export default class PieNews extends React.PureComponent {
 
@@ -24,34 +14,36 @@ export default class PieNews extends React.PureComponent {
     this.state = {
       labels: [],
       dataState: [],
-      isFetch:false
+      isFetch: false
     }
   }
 
-  componentDidMount() {
-    getNewsSource().then((response) => {
-      this.setState({
-        dataState: Object.values(response.data),
-        label: Object.keys(response.data),
-        isFetch:true,
-      })
-    })
-  }
 
-  // componentWillMount() {
-  //   setInterval(() => {
-  //     this.setState(getState());
-  //   }, 5000);
-  // }
+  componentWillReceiveProps = (props) => {
+    const {sagaData} = props
+    let obj = sagaData
+    if (sagaData) {
+      for (let prop in obj) {
+        if (obj[prop] < 20)
+          delete obj[prop];
+      }
+      this.setState({
+        dataState: Object.values(obj),
+        label: Object.keys(obj),
+        isFetch: true,
+      })
+    }
+  }
 
 
   render() {
-    const {dataState, isFetch,label} =this.state
+    const {dataState, label, isFetch} =this.state
 
     function getRandomColor() {
       var hex = Math.floor(Math.random() * 0xFFFFFF);
       return "#" + ("000000" + hex.toString(16)).substr(-6);
     }
+
 
     const data = {
       labels: label,
@@ -86,13 +78,16 @@ export default class PieNews extends React.PureComponent {
         }
       ]
     }
-    if (isFetch){
+
+    if (isFetch) {
       return (
         <div>
-          <Doughnut data={data}/>
+          <h1> Doughnut news data </h1>
+          <Doughnut  data={data}/>
         </div>
-      )} else {
-      return <div > <ScaleLoader color="#26A65B" /> </div>
+      )
+    } else {
+      return <div ><ClipLoader color="#26A65B"/></div>
     }
   }
 }

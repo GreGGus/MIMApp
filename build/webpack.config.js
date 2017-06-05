@@ -88,6 +88,8 @@ config.module.rules.push({
   }],
 })
 
+
+
 // Styles
 // ------------------------------------
 const extractStyles = new ExtractTextPlugin({
@@ -97,7 +99,7 @@ const extractStyles = new ExtractTextPlugin({
 })
 
 config.module.rules.push({
-  test: /\.(sass|scss)$/,
+  test: /\.(sass|scss|css)$/,
   loader: extractStyles.extract({
     fallback: 'style-loader',
     use: [
@@ -134,6 +136,9 @@ config.module.rules.push({
     ],
   })
 })
+
+
+
 config.plugins.push(extractStyles)
 
 // Images
