@@ -84,7 +84,7 @@ class TimeLineNews extends React.PureComponent {
     })
     return [a, b, c, e, d, f, g, h, i, j, k, l]
   }
-  
+
   render() {
 
     const {dataState,isFetch} =this.state

@@ -24,7 +24,7 @@ class PolarNews extends React.PureComponent {
 
     if (sagaData) {
       for (let prop in obj) {
-        if (obj[prop] < 6)
+        if (obj[prop] < 35)
           delete obj[prop];
       }
       this.setState({
